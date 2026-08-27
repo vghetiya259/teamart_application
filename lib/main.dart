@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const TeaMartApp());
@@ -12,29 +11,20 @@ class TeaMartApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-<<<<<<< Updated upstream
-      title: 'Vasu App',
 
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
 
-      home: const MyHomePage(
-        title: 'Vasu Flutter App',
-      ),
+      home: const MyHomePage(title: 'Vasu Flutter App'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({
-    super.key,
-    required this.title,
-  });
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -74,13 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(
           widget.title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor:
-            Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
 
       body: Center(
@@ -89,20 +76,14 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             const Text(
               'Counter Value',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 20),
 
             Text(
               '$_counter',
-              style: const TextStyle(
-                fontSize: 60,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 30),
@@ -144,11 +125,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-=======
-      title: 'TeaMart',
-      theme: ThemeData(fontFamily: 'Roboto'),
-      home: const SplashScreen(),
-    );
-  }
->>>>>>> Stashed changes
 }
