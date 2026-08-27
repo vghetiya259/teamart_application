@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const TeaMartApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class TeaMartApp extends StatelessWidget {
+  const TeaMartApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+<<<<<<< Updated upstream
       title: 'Vasu App',
 
       theme: ThemeData(
@@ -142,4 +144,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+=======
+      title: 'TeaMart',
+      theme: ThemeData(fontFamily: 'Roboto'),
+      home: const SplashScreen(),
+    );
+  }
+>>>>>>> Stashed changes
 }
