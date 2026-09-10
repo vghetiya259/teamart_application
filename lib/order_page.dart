@@ -6,14 +6,16 @@ class OrderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20.0),
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Toggle Tab
           Container(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: const Color(0xFFE4CCAA),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -22,123 +24,51 @@ class OrderPage extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF3C201A),
-                      borderRadius: BorderRadius.circular(16),
+                      color: const Color(0xFF4A2E2B),
+                      borderRadius: BorderRadius.circular(18),
                     ),
-                    child: const Text(
-                      'Ongoing Order',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 11),
+                    child: const Center(
+                      child: Text(
+                        'Ongoing Order',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text(
+                  child: Center(
+                    child: Text(
                       'Completed Orders',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey, fontSize: 11),
+                      style: TextStyle(
+                        color: Colors.brown[800],
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 16),
 
+          // Ongoing Card
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'ORDER ID: #00012476',
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
-                ),
-                const Text(
-                  'Placed on 27 Jul 2026, 09:23 AM',
-                  style: TextStyle(fontSize: 9, color: Colors.grey),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Row(
-                      children: [
-                        CircleAvatar(radius: 4, backgroundColor: Colors.orange),
-                        SizedBox(width: 6),
-                        Text(
-                          'PREPARING',
-                          style: TextStyle(
-                            color: Colors.orange,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ),
-                    OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.navigation,
-                        size: 12,
-                        color: Colors.black,
-                      ),
-                      label: const Text(
-                        'Track Order',
-                        style: TextStyle(fontSize: 10, color: Colors.black),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(),
-                _orderItemRow(
-                  'Cappuccino',
-                  '₹4.50',
-                  'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200',
-                ),
-                _orderItemRow(
-                  'Iced Latte',
-                  '₹5.20',
-                  'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=200',
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
                 ),
               ],
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Completed Orders',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'View All >',
-                  style: TextStyle(color: Colors.orange, fontSize: 11),
-                ),
-              ),
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
             ),
             child: Column(
               children: [
@@ -146,23 +76,133 @@ class OrderPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'ORDER ID: #00010544',
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                      'ORDER ID: #8203014',
+                      style: TextStyle(fontSize: 9, color: Colors.grey),
                     ),
                     Text(
-                      'COMPLETED',
-                      style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 11,
+                      '23 Dec 2024, 10:15 AM',
+                      style: TextStyle(fontSize: 9, color: Colors.grey),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.orange[50],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Text(
+                        'PREPARING',
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange,
+                        ),
+                      ),
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.location_on,
+                        size: 12,
+                        color: Colors.black,
+                      ),
+                      label: const Text(
+                        'Track Order',
+                        style: TextStyle(fontSize: 9, color: Colors.black),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const Divider(),
+                const Divider(height: 16),
+                _orderItemRow(
+                  'Cappuccino',
+                  '1x | Regular | White Sugar',
+                  '₹ 120',
+                  'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200',
+                ),
+                _orderItemRow(
+                  'Iced Latte',
+                  '1x | Large | Caramel Syrup',
+                  '₹ 320',
+                  'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=200',
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Completed Section Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Completed Orders',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF3C2415),
+                ),
+              ),
+              Text(
+                'View All',
+                style: TextStyle(fontSize: 10, color: Colors.orange[800]),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.green[50],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text(
+                    'COMPLETED',
+                    style: TextStyle(
+                      fontSize: 9,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 _orderItemRow(
                   'Espresso',
-                  '₹3.20',
+                  'Double Shot',
+                  '₹ 120',
                   'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200',
                 ),
               ],
@@ -173,25 +213,42 @@ class OrderPage extends StatelessWidget {
     );
   }
 
-  Widget _orderItemRow(String title, String price, String img) {
+  Widget _orderItemRow(String title, String sub, String price, String imgUrl) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(img, width: 40, height: 40, fit: BoxFit.cover),
+            borderRadius: BorderRadius.circular(6),
+            child: Image.network(
+              imgUrl,
+              width: 38,
+              height: 38,
+              fit: BoxFit.cover,
+            ),
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  sub,
+                  style: const TextStyle(fontSize: 9, color: Colors.grey),
+                ),
+              ],
             ),
           ),
           Text(
             price,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
           ),
         ],
       ),
