@@ -1,82 +1,358 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final PageController _pageController = PageController();
+
+  int _currentPage = 0;
+
+  // ============================================================
+  // HERO BANNERS
+  // ============================================================
+
+  final List<Map<String, String>> _heroBanners = [
+    {
+      'title': 'Elegance In\nEvery Bloom.',
+      'subtitle': 'Premium flower teas for your soul.',
+      'image': 'assets/home1.png',
+    },
+    {
+      'title': 'The Purest\nBlends.',
+      'subtitle': 'Sourced from the finest gardens.',
+      'image': 'assets/home2.png',
+    },
+    {
+      'title': 'Find Your\nPerfect Brew.',
+      'subtitle': 'Freshly prepared tea for you.',
+      'image': 'assets/home3.png',
+    },
+  ];
+
+  // ============================================================
+  // CATEGORIES DATA
+  // ============================================================
+
+  final List<Map<String, String>> _categories = [
+    {'title': 'Gourmet Coffee', 'image': 'assets/ec1.png'},
+    {'title': 'Premium Tea', 'image': 'assets/ec2.png'},
+    {'title': 'Organic Green', 'image': 'assets/ec3.png'},
+  ];
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Align(
-            alignment: Alignment.center,
-            child: Text(
-              'Welcome, [User Name]!',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF3C201A)),
-            ),
-          ),
-          const SizedBox(height: 15),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
 
-          // Hero Banner
-          Container(
-            height: 160,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              image: const DecorationImage(
-                image: NetworkImage('https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: LinearGradient(
-                  colors: [Colors.black.withOpacity(0.6), Colors.transparent],
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                ),
-              ),
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Elegance In\nEvery Bloom.', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 4),
-                  Text('Unwind with a warm brew for your soul.', style: TextStyle(color: Colors.white70, fontSize: 10)),
-                ],
-              ),
-            ),
+        // ======================================================
+        // BACKGROUND IMAGE
+        // ======================================================
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/background.png'),
+            fit: BoxFit.cover,
           ),
-          const SizedBox(height: 20),
+        ),
 
-          // Explore Categories
-          const Text('Explore Categories', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF3C201A))),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(child: _categoryCard('Gourmet Coffee', 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300')),
-              const SizedBox(width: 12),
-              Expanded(child: _categoryCard('Premium Tea', 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=300')),
-            ],
-          ),
-          const SizedBox(height: 20),
-
-          // Top Rated Brews
-          const Text('Top Rated Brews', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF3C201A))),
-          const SizedBox(height: 10),
-          SizedBox(
-            height: 170,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _topBrewCard('Vanilla Latte', '4.5', '₹1.00', 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=300'),
-                _topBrewCard('Chai Latte', '4.8', '₹7.00', 'https://images.unsplash.com/photo-1578899952107-9c390f1af1b7?w=300'),
-                _topBrewCard('Green Tea', '4.6', '₹3.00', 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=300'),
+                // =================================================
+                // WELCOME
+                // =================================================
+                const Text(
+                  'Welcome, Sujal!',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF3C2415),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                // =================================================
+                // HERO SLIDER
+                // =================================================
+                SizedBox(
+                  height: 150,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: _heroBanners.length,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentPage = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      final banner = _heroBanners[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: Image.asset(
+                                  banner['image']!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: const Color(0xFFD9C3A5),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.image_not_supported,
+                                          size: 40,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              Positioned.fill(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.black.withOpacity(0.75),
+                                        Colors.black.withOpacity(0.15),
+                                        Colors.transparent,
+                                      ],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned.fill(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          banner['title']!,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Serif',
+                                            height: 1.1,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          banner['subtitle']!,
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // =================================================
+                // SLIDER DOTS
+                // =================================================
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(_heroBanners.length, (index) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.symmetric(horizontal: 3),
+                      height: 5,
+                      width: _currentPage == index ? 18 : 5,
+                      decoration: BoxDecoration(
+                        color: _currentPage == index
+                            ? const Color(0xFF4A2E2B)
+                            : Colors.grey.shade400,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    );
+                  }),
+                ),
+
+                const SizedBox(height: 18),
+
+                // =================================================
+                // EXPLORE CATEGORIES (HORIZONTAL SLIDER)
+                // =================================================
+                const Text(
+                  'Explore Categories',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF3C2415),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                SizedBox(
+                  height: 160,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: _categories.length,
+                    itemBuilder: (context, index) {
+                      final category = _categories[index];
+                      return _newCategoryCard(
+                        category['title']!,
+                        category['image']!,
+                      );
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 18),
+
+                // =================================================
+                // TOP RATED BREWS
+                // =================================================
+                const Text(
+                  'Top Rated Brews',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF3C2415),
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                SizedBox(
+                  height: 175,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      _brewCard(
+                        'Vanilla Tea',
+                        '₹ 150',
+                        '4.8',
+                        'assets/rb1.png',
+                      ),
+                      _brewCard(
+                        'Chai Latte',
+                        '₹ 130',
+                        '4.7',
+                        'assets/rb2.png',
+                      ),
+                      _brewCard(
+                        'Green Tea',
+                        '₹ 110',
+                        '4.9',
+                        'assets/rb3.png',
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ============================================================
+  // CATEGORY CARD (UPDATED ACCORDING TO DESIGN)
+  // ============================================================
+
+  Widget _newCategoryCard(String title, String imagePath) {
+    return Container(
+      width: 200,
+      margin: const EdgeInsets.only(right: 12),
+      child: Column(
+        children: [
+          // Image Section
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset(
+                imagePath,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: const Color(0xFFE8DCCB),
+                    child: const Center(
+                      child: Icon(
+                        Icons.local_cafe,
+                        color: Color(0xFF6B4226),
+                        size: 30,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          // Label Section
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF3C2415),
+              ),
             ),
           ),
         ],
@@ -84,59 +360,88 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _categoryCard(String title, String imageUrl) {
-    return Container(
-      height: 90,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        image: DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.cover),
-      ),
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
-        ),
-        child: Text(title, textAlign: TextAlign.center, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-      ),
-    );
-  }
+  // ============================================================
+  // BREW CARD
+  // ============================================================
 
-  Widget _topBrewCard(String title, String rating, String price, String imageUrl) {
+  Widget _brewCard(String name, String price, String rating, String imagePath) {
     return Container(
       width: 120,
-      margin: const EdgeInsets.only(right: 12),
+      margin: const EdgeInsets.only(right: 10),
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.94),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.network(imageUrl, height: 75, width: double.infinity, fit: BoxFit.cover),
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset(
+              imagePath,
+              height: 75,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 75,
+                  width: double.infinity,
+                  color: const Color(0xFFE8DCCB),
+                  child: const Icon(Icons.local_cafe, color: Color(0xFF6B4226)),
+                );
+              },
+            ),
           ),
           const SizedBox(height: 6),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF3C2415),
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           Row(
             children: [
-              const Icon(Icons.star, color: Colors.amber, size: 12),
-              Text(rating, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+              const Icon(Icons.star, size: 12, color: Colors.amber),
+              Text(
+                ' $rating',
+                style: const TextStyle(fontSize: 10, color: Colors.grey),
+              ),
             ],
           ),
           const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(price, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+              Text(
+                price,
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF3C2415),
+                ),
+              ),
               Container(
-                padding: const EdgeInsets.all(3),
-                decoration: BoxDecoration(color: const Color(0xFF3C201A), borderRadius: BorderRadius.circular(6)),
-                child: const Icon(Icons.add, color: Colors.white, size: 12),
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4A2E2B),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: const Icon(Icons.add, size: 12, color: Colors.white),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
