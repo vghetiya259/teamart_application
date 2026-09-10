@@ -1,35 +1,15 @@
-<<<<<<< Updated upstream
-import 'package:flutter/material.dart';
-=======
->>>>>>> Stashed changes
 import 'package:flutter_test/flutter_test.dart';
 import 'package:teamart_application/main.dart';
 
 void main() {
-<<<<<<< Updated upstream
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+  testWidgets('TeaMart App Screen test', (WidgetTester tester) async {
+    // App રન કરો (જો main.dart માં ક્લાસનું નામ CoffeeApp હોય તો CoffeeApp() લખવું)
+    await tester.pumpWidget(const CoffeeApp());
 
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // App લોડ થઈ છે કે નહીં તે ચેક કરો
+    expect(find.byType(CoffeeApp), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-=======
-  testWidgets('TeaMart Splash Screen test', (WidgetTester tester) async {
-    await tester.pumpWidget(const TeaMartApp());
-
-    // Check that TeaMart app is loaded
-    expect(find.byType(TeaMartApp), findsOneWidget);
-
-    // Wait for splash screen
+    // 1 સેકન્ડ વેટ કરીને ફ્રેમ રિકોલ કરો
     await tester.pump(const Duration(seconds: 1));
-
-    // Splash screen should still be visible
-    //expect(find.byType(SplashScreen), findsOneWidget);
->>>>>>> Stashed changes
   });
 }
