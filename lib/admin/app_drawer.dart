@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../dashboard.dart';
+import 'dashboard.dart';
 import 'users_page.dart';
 import 'order_page.dart';
 import 'admin_products_page.dart';
