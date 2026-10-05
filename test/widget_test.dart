@@ -1,6 +1,6 @@
 // import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:teamart_application/main.dart';
+import 'package:teamart_application/admin/main.dart';
 
 void main() {
   testWidgets('Admin Login page rendering test', (WidgetTester tester) async {
