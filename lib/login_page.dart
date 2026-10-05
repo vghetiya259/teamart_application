@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'register_page.dart';
 import 'forgot_password_page.dart';
+import 'home_page.dart';
+
+// Admin folder ની અંદર રહેલી Admin Login Page
+import 'admin/admin_login_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -9,18 +14,28 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7EEDD),
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
               const SizedBox(height: 10),
+
+              // ============================================================
+              // LOGO
+              // ============================================================
               Image.asset(
                 'assets/TeaMart.png',
                 height: 110,
                 fit: BoxFit.contain,
               ),
+
               const SizedBox(height: 20),
+
+              // ============================================================
+              // WELCOME TEXT
+              // ============================================================
               const Text(
                 'Welcome Back!',
                 style: TextStyle(
@@ -29,17 +44,45 @@ class LoginPage extends StatelessWidget {
                   color: Color(0xFF3B2B20),
                 ),
               ),
+
+              const SizedBox(height: 4),
+
               const Text(
-                'Log in to you Brewing Journey',
+                'Log in to your Brewing Journey',
                 style: TextStyle(color: Colors.grey, fontSize: 12),
               ),
+
               const SizedBox(height: 25),
+
+              // ============================================================
+              // EMAIL
+              // ============================================================
               _buildTextField('Email Address', Icons.email_outlined),
+
               const SizedBox(height: 15),
+
+              // ============================================================
+              // PASSWORD
+              // ============================================================
               _buildTextField('Password', Icons.lock_outline, isObscure: true),
+
               const SizedBox(height: 25),
-              _buildBrownButton('Login in to your Mart', () {}),
+
+              // ============================================================
+              // LOGIN BUTTON
+              // ============================================================
+              _buildBrownButton('Login in to your Mart', () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
+              }),
+
               const SizedBox(height: 15),
+
+              // ============================================================
+              // FORGOT PASSWORD
+              // ============================================================
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -57,11 +100,17 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
+
               const SizedBox(height: 20),
+
+              // ============================================================
+              // REGISTER
+              // ============================================================
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have  an account ? "),
+                  const Text("Don't have an account? "),
+
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -81,20 +130,41 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
+
               const SizedBox(height: 15),
+
+              // ============================================================
+              // ADMIN LOGIN
+              // ============================================================
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AdminLoginPage(),
+                    ),
+                  );
+                },
                 child: const Text(
                   'Admin Login',
-                  style: TextStyle(color: Color(0xFF5A3A22)),
+                  style: TextStyle(
+                    color: Color(0xFF5A3A22),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
+
+              const SizedBox(height: 10),
             ],
           ),
         ),
       ),
     );
   }
+
+  // ============================================================
+  // TEXT FIELD
+  // ============================================================
 
   Widget _buildTextField(String hint, IconData icon, {bool isObscure = false}) {
     return Container(
@@ -117,6 +187,10 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+
+  // ============================================================
+  // BROWN BUTTON
+  // ============================================================
 
   Widget _buildBrownButton(String text, VoidCallback onPressed) {
     return SizedBox(
