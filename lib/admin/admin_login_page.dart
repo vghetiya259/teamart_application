@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'admin_register_page.dart';
-import 'dashboard.dart'; // Dashboard પેજ ઈમ્પોર્ટ કર્યું
+import 'dashboard.dart';
 
 class AdminLoginPage extends StatefulWidget {
   const AdminLoginPage({super.key});
@@ -12,7 +12,11 @@ class AdminLoginPage extends StatefulWidget {
 class _AdminLoginPageState extends State<AdminLoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   bool _isPasswordVisible = false;
+
+  String _emailError = '';
+  String _passwordError = '';
 
   @override
   void dispose() {
@@ -22,27 +26,48 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   }
 
   void _handleLogin() {
-    FocusScope.of(context).unfocus(); // Keyboard hide કરે છે
+    FocusScope.of(context).unfocus();
 
-    String email = _emailController.text.trim();
-    String password = _passwordController.text.trim();
+    setState(() {
+      bool isValid = true;
 
-    // Validation ચેક
-    if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter email and password'),
-          backgroundColor: Colors.red,
-        ),
+      String email = _emailController.text.trim();
+      String password = _passwordController.text;
+
+      final emailRegex = RegExp(
+        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
       );
-      return;
-    }
 
-    // Dashboard પેજ પર જવા માટે Navigation (પાછળ ના આવવું હોય તો pushReplacement વાપરી શકો)
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const DashboardScreen()),
-    );
+      // EMAIL VALIDATION
+      if (email.isEmpty) {
+        _emailError = 'Email is required';
+        isValid = false;
+      } else if (!emailRegex.hasMatch(email)) {
+        _emailError = 'Enter a valid email address';
+        isValid = false;
+      } else {
+        _emailError = '';
+      }
+
+      // PASSWORD VALIDATION
+      if (password.isEmpty) {
+        _passwordError = 'Password is required';
+        isValid = false;
+      } else if (password.length < 6) {
+        _passwordError = 'Password must be at least 6 characters';
+        isValid = false;
+      } else {
+        _passwordError = '';
+      }
+
+      // LOGIN ONLY IF VALID
+      if (isValid) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const DashboardScreen()),
+        );
+      }
+    });
   }
 
   @override
@@ -57,11 +82,12 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Logo Section
+                // LOGO
                 _buildLogo(),
+
                 const SizedBox(height: 24),
 
-                // Title
+                // TITLE
                 const Text(
                   'Admin Login',
                   style: TextStyle(
@@ -70,18 +96,22 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     color: Color(0xFF332014),
                   ),
                 ),
+
                 const SizedBox(height: 24),
 
-                // Email Text Field
+                // EMAIL
                 _buildTextField(
                   controller: _emailController,
                   hintText: 'Email Address',
                   icon: Icons.mark_email_unread_outlined,
                   keyboardType: TextInputType.emailAddress,
                 ),
+
+                _buildErrorText(_emailError),
+
                 const SizedBox(height: 12),
 
-                // Password Text Field
+                // PASSWORD
                 _buildTextField(
                   controller: _passwordController,
                   hintText: 'Password',
@@ -102,9 +132,12 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     },
                   ),
                 ),
+
+                _buildErrorText(_passwordError),
+
                 const SizedBox(height: 24),
 
-                // Login Button
+                // LOGIN BUTTON
                 SizedBox(
                   width: double.infinity,
                   height: 44,
@@ -118,7 +151,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     ),
                     onPressed: _handleLogin,
                     child: const Text(
-                      'Login in to your Mart',
+                      'Login to your Mart',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -127,14 +160,15 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 32),
 
-                // Register Link Navigation
+                // REGISTER
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Don't have  an account ? ",
+                      "Don't have an account? ",
                       style: TextStyle(fontSize: 12, color: Color(0xFF332014)),
                     ),
                     InkWell(
@@ -168,6 +202,25 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     );
   }
 
+  // ERROR TEXT
+  Widget _buildErrorText(String error) {
+    if (error.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4, left: 4),
+        child: Text(
+          error,
+          style: const TextStyle(color: Colors.red, fontSize: 12),
+        ),
+      ),
+    );
+  }
+
+  // LOGO
   Widget _buildLogo() {
     return Column(
       children: [
@@ -184,7 +237,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             color: Color(0xFF2D5A27),
           ),
         ),
+
         const SizedBox(height: 6),
+
         const Text(
           'TeaMart',
           style: TextStyle(
@@ -194,6 +249,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             letterSpacing: 0.5,
           ),
         ),
+
         const Text(
           'Fresh Tea, Delivered To Your Door',
           style: TextStyle(
@@ -207,6 +263,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     );
   }
 
+  // TEXT FIELD
   Widget _buildTextField({
     required TextEditingController controller,
     required String hintText,
@@ -224,8 +281,6 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
         controller: controller,
         obscureText: obscureText,
         keyboardType: keyboardType,
-        enabled: true,
-        readOnly: false,
         style: const TextStyle(fontSize: 13, color: Colors.black87),
         decoration: InputDecoration(
           hintText: hintText,
