@@ -19,43 +19,37 @@ class _ShopPageState extends State<ShopPage> {
       'title': 'Cappuccino',
       'sub': 'Smooth & Creamy',
       'price': '₹ 180',
-      'image':
-          'https://images.unsplash.com/photo-1534778101976-62847782c213?w=400',
+      'image': 'assets/rb1.png',
     },
     {
       'title': 'Iced Latte',
       'sub': 'Chilled & Refreshing',
       'price': '₹ 200',
-      'image':
-          'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400',
+      'image': 'assets/rb1.png',
     },
     {
       'title': 'Matcha Latte',
       'sub': 'Pure & Green',
       'price': '₹ 190',
-      'image':
-          'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=400',
+      'image': 'assets/rb2.png',
     },
     {
       'title': 'Espresso',
       'sub': 'Strong & Bold',
       'price': '₹ 120',
-      'image':
-          'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400',
+      'image': 'assets/rb3.png',
     },
     {
       'title': 'Mocha',
       'sub': 'Rich Chocolate & Coffee',
       'price': '₹ 210',
-      'image':
-          'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400',
+      'image': 'assets/home1.png',
     },
     {
       'title': 'Coffee Beans',
       'sub': 'Fresh Roasted Blend',
       'price': '₹ 350',
-      'image':
-          'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400',
+      'image': 'assets/home2.png',
     },
   ];
 
