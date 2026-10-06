@@ -1,33 +1,99 @@
 import 'package:flutter/material.dart';
 import 'reset_password_page.dart';
 
-class ForgotPasswordPage extends StatelessWidget {
+class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
+
+  @override
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+}
+
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  final TextEditingController emailController = TextEditingController();
+
+  String errEmail = "";
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  void validateAndContinue() {
+    setState(() {
+      String email = emailController.text.trim();
+
+      final emailRegex = RegExp(
+        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+      );
+
+      if (email.isEmpty) {
+        errEmail = "Email is required";
+        return;
+      } else if (!emailRegex.hasMatch(email)) {
+        errEmail = "Enter a valid email address";
+        return;
+      } else {
+        errEmail = "";
+      }
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ResetPasswordPage()),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7EEDD),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
               const SizedBox(height: 10),
+
               Image.asset(
                 'assets/TeaMart.png',
                 height: 100,
                 fit: BoxFit.contain,
               ),
+
               const SizedBox(height: 30),
+
               Image.asset(
                 'assets/lock-removebg-preview.png',
                 height: 110,
                 fit: BoxFit.contain,
               ),
+
               const SizedBox(height: 30),
-              _buildTextField('Email Address', Icons.email_outlined),
+
+              // EMAIL FIELD
+              _buildTextField(
+                controller: emailController,
+                hint: 'Email Address',
+                icon: Icons.email_outlined,
+                keyboardType: TextInputType.emailAddress,
+              ),
+
+              if (errEmail.isNotEmpty)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 4, left: 4),
+                    child: Text(
+                      errEmail,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+                ),
+
               const SizedBox(height: 25),
+
+              // REQUEST BUTTON
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -38,21 +104,17 @@ class ForgotPasswordPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ResetPasswordPage(),
-                      ),
-                    );
-                  },
+                  onPressed: validateAndContinue,
                   child: const Text(
                     'Request to Password',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),
+
               const SizedBox(height: 20),
+
+              // BACK TO LOGIN
               GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: const Text(
@@ -70,7 +132,12 @@ class ForgotPasswordPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String hint, IconData icon) {
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hint,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -80,6 +147,8 @@ class ForgotPasswordPage extends StatelessWidget {
         ],
       ),
       child: TextField(
+        controller: controller,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           hintText: hint,
           hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
