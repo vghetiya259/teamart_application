@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'app_drawer.dart'; // કોમન Drawer ફાઇલ
+import 'admin_profile_page.dart';
+import 'app_drawer.dart';
 import 'order_page.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -7,17 +8,14 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color bgColor = Color(0xFFF2D6AB); // સેન્ડ/ક્રીમ બેકગ્રાઉન્ડ કલર
-    const Color darkBrown = Color(0xFF332014); // મેઈન ટેક્સ્ટ કલર
-    const Color headerBrown = Color(0xFF704D31); // હેડર અને બટન કલર
-    const Color greenAccent = Color(0xFF2E5A1C); // બ્રાન્ડ ગ્રીન કલર
+    const Color bgColor = Color(0xFFF2D6AB);
+    const Color darkBrown = Color(0xFF332014);
+    const Color headerBrown = Color(0xFF704D31);
+    const Color greenAccent = Color(0xFF2E5A1C);
 
     return Scaffold(
       backgroundColor: bgColor,
-
-     
       drawer: const AppDrawer(currentPage: 'Dashboard'),
-
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -25,11 +23,10 @@ class DashboardScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-             
+              // Top Bar (Drawer Button & Profile Avatar)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                 
                   Builder(
                     builder: (context) => IconButton(
                       icon: const Icon(Icons.menu, color: darkBrown, size: 28),
@@ -38,15 +35,25 @@ class DashboardScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  const CircleAvatar(
-                    radius: 16,
-                    backgroundColor: Color(0xFFE2BE8D),
-                    child: Text(
-                      'A',
-                      style: TextStyle(
-                        color: darkBrown,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminProfilePage(),
+                        ),
+                      );
+                    },
+                    child: const CircleAvatar(
+                      radius: 16,
+                      backgroundColor: Color(0xFFE2BE8D),
+                      child: Text(
+                        'A',
+                        style: TextStyle(
+                          color: darkBrown,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -54,7 +61,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-             
+              // Brand Logo & Name
               Column(
                 children: [
                   Icon(
@@ -85,7 +92,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 22),
 
-              
+              // Overview Header & Revenue
               const Text(
                 'Dashboard Overview',
                 style: TextStyle(
@@ -123,7 +130,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 18),
 
-             
+              // Metrics Section
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -137,7 +144,6 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
-            
               _buildMetricRow(
                 avatarBg: const Color(0xFFE2BE8D),
                 icon: Icons.shopping_bag_rounded,
@@ -148,7 +154,6 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -212,7 +217,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 22),
 
-              // Recent Orders ટાઇટલ
+              // Recent Orders Section
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -226,7 +231,6 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              // Table કન્ટેનર
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
