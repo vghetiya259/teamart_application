@@ -102,8 +102,6 @@ class AppDrawer extends StatelessWidget {
                   page: const AddProductsPage(),
                   isSelected: currentPage == 'AddProduct',
                 ),
-
-                
               ],
             ),
           ),
@@ -195,3 +193,6 @@ class AppDrawer extends StatelessWidget {
     );
   }
 }
+
+
+// hello
