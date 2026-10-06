@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app_drawer.dart';
+import 'admin_profile_page.dart';
 
 class OrderPage extends StatelessWidget {
   const OrderPage({super.key});
@@ -26,15 +27,27 @@ class OrderPage extends StatelessWidget {
                       onPressed: () => Scaffold.of(context).openDrawer(),
                     ),
                   ),
-                  const CircleAvatar(
-                    radius: 15,
-                    backgroundColor: Color(0xFFE2BE8D),
-                    child: Text(
-                      'A',
-                      style: TextStyle(
-                        color: darkBrown,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+
+                  // Admin Profile Redirection
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminProfilePage(),
+                        ),
+                      );
+                    },
+                    child: const CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Color(0xFFE2BE8D),
+                      child: Text(
+                        'A',
+                        style: TextStyle(
+                          color: darkBrown,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),

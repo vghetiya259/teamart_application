@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'app_drawer.dart';
+
 import 'add_products_page.dart';
+
 import 'edit_products_page.dart';
+
+import 'admin_profile_page.dart';
 
 class AdminProductsPage extends StatelessWidget {
   const AdminProductsPage({super.key});
 
   static const Color bgColor = Color(0xFFF2D6AB);
+
   static const Color darkBrown = Color(0xFF4A2E18);
 
   @override
@@ -29,15 +35,27 @@ class AdminProductsPage extends StatelessWidget {
                       onPressed: () => Scaffold.of(context).openDrawer(),
                     ),
                   ),
-                  const CircleAvatar(
-                    radius: 15,
-                    backgroundColor: Color(0xFFE2BE8D),
-                    child: Text(
-                      'A',
-                      style: TextStyle(
-                        color: darkBrown,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+
+                  // Admin Profile Redirection
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminProfilePage(),
+                        ),
+                      );
+                    },
+                    child: const CircleAvatar(
+                      radius: 15,
+                      backgroundColor: Color(0xFFE2BE8D),
+                      child: Text(
+                        'A',
+                        style: TextStyle(
+                          color: darkBrown,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
