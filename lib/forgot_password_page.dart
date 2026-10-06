@@ -21,7 +21,7 @@ class ForgotPasswordPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Image.asset(
-                'assets/forgot_lock.png',
+                'assets/lock-removebg-preview.png',
                 height: 110,
                 fit: BoxFit.contain,
               ),
@@ -34,18 +34,34 @@ class ForgotPasswordPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF6B4226),
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ResetPasswordPage()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ResetPasswordPage(),
+                      ),
+                    );
                   },
-                  child: const Text('Request to Password', style: TextStyle(color: Colors.white, fontSize: 16)),
+                  child: const Text(
+                    'Request to Password',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () => Navigator.pop(context),
-                child: const Text('Back to Login..', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600)),
+                child: const Text(
+                  'Back to Login..',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ],
           ),
@@ -59,7 +75,9 @@ class ForgotPasswordPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))],
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
+        ],
       ),
       child: TextField(
         decoration: InputDecoration(
