@@ -21,7 +21,7 @@ class ResetPasswordPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Image.asset(
-                'assets/reset_key.png',
+                'assets/resate-removebg-preview.png',
                 height: 110,
                 fit: BoxFit.contain,
               ),
