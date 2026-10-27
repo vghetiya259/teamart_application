@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'admin_register_page.dart';
-import 'dashboard.dart'; // જો પાથ અલગ હોય તો ફક્ત સાચો પાથ રાખો
+import '../admin/Dashboard.dart';
 
 class AdminLoginPage extends StatefulWidget {
   const AdminLoginPage({super.key});
@@ -59,7 +59,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
       if (isValid) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => DashboardScreen()),
+          MaterialPageRoute(builder: (context) => const DashboardScreen()),
         );
       }
     });
