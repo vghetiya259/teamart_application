@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'admin_register_page.dart';
-import 'dashboard.dart'; // Dashboard પેજ ઈમ્પોર્ટ કર્યું
+import '../admin/Dashboard.dart';
 
 class AdminLoginPage extends StatefulWidget {
   const AdminLoginPage({super.key});
@@ -14,6 +14,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
 
+  // Error message variables
+  String? _emailError;
+  String? _passwordError;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -22,27 +26,43 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
   }
 
   void _handleLogin() {
-    FocusScope.of(context).unfocus(); // Keyboard hide કરે છે
+    FocusScope.of(context).unfocus();
 
-    String email = _emailController.text.trim();
-    String password = _passwordController.text.trim();
+    setState(() {
+      _emailError = null;
+      _passwordError = null;
 
-    // Validation ચેક
-    if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter email and password'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
+      final email = _emailController.text.trim();
+      final password = _passwordController.text.trim();
 
-    // Dashboard પેજ પર જવા માટે Navigation (પાછળ ના આવવું હોય તો pushReplacement વાપરી શકો)
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const DashboardScreen()),
-    );
+      bool isValid = true;
+
+      // Email Validation
+      if (email.isEmpty) {
+        _emailError = 'Email address is required';
+        isValid = false;
+      } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+        _emailError = 'Please enter a valid email';
+        isValid = false;
+      }
+
+      // Password Validation
+      if (password.isEmpty) {
+        _passwordError = 'Password is required';
+        isValid = false;
+      } else if (password.length < 6) {
+        _passwordError = 'Password must be at least 6 characters';
+        isValid = false;
+      }
+
+      // If validation succeeds, navigate to Dashboard
+      if (isValid) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const DashboardScreen()),
+        );
+      }
+    });
   }
 
   @override
@@ -78,6 +98,12 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                   hintText: 'Email Address',
                   icon: Icons.mark_email_unread_outlined,
                   keyboardType: TextInputType.emailAddress,
+                  errorText: _emailError,
+                  onChanged: (_) {
+                    if (_emailError != null) {
+                      setState(() => _emailError = null);
+                    }
+                  },
                 ),
                 const SizedBox(height: 12),
 
@@ -87,6 +113,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                   hintText: 'Password',
                   icon: Icons.lock_outline,
                   obscureText: !_isPasswordVisible,
+                  errorText: _passwordError,
                   suffixIcon: IconButton(
                     icon: Icon(
                       _isPasswordVisible
@@ -101,6 +128,11 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       });
                     },
                   ),
+                  onChanged: (_) {
+                    if (_passwordError != null) {
+                      setState(() => _passwordError = null);
+                    }
+                  },
                 ),
                 const SizedBox(height: 24),
 
@@ -214,31 +246,51 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     bool obscureText = false,
     TextInputType keyboardType = TextInputType.text,
     Widget? suffixIcon,
+    String? errorText,
+    ValueChanged<String>? onChanged,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFF2F2F2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: TextField(
-        controller: controller,
-        obscureText: obscureText,
-        keyboardType: keyboardType,
-        enabled: true,
-        readOnly: false,
-        style: const TextStyle(fontSize: 13, color: Colors.black87),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
-          prefixIcon: Icon(icon, size: 18, color: Colors.black87),
-          suffixIcon: suffixIcon,
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            vertical: 14,
-            horizontal: 12,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF2F2F2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: TextField(
+            controller: controller,
+            obscureText: obscureText,
+            keyboardType: keyboardType,
+            onChanged: onChanged,
+            style: const TextStyle(fontSize: 13, color: Colors.black87),
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
+              prefixIcon: Icon(icon, size: 18, color: Colors.black87),
+              suffixIcon: suffixIcon,
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 14,
+                horizontal: 12,
+              ),
+            ),
           ),
         ),
-      ),
+        if (errorText != null) ...[
+          const SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Text(
+              errorText,
+              style: const TextStyle(
+                color: Color(0xFFE53935),
+                fontSize: 11,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ],
+      ],
     );
   }
 }
