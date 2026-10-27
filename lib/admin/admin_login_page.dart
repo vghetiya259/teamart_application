@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'admin_register_page.dart';
-import 'dashboard.dart';
-import '../admin/Dashboard.dart';
+import 'dashboard.dart'; // જો પાથ અલગ હોય તો ફક્ત સાચો પાથ રાખો
 
 class AdminLoginPage extends StatefulWidget {
   const AdminLoginPage({super.key});
@@ -60,7 +59,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
       if (isValid) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const DashboardScreen()),
+          MaterialPageRoute(builder: (context) => DashboardScreen()),
         );
       }
     });
@@ -167,7 +166,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Don't have  an account ? ",
+                      "Don't have an account ? ",
                       style: TextStyle(fontSize: 12, color: Color(0xFF332014)),
                     ),
                     InkWell(
