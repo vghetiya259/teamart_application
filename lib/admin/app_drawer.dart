@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dashboard.dart';
-import '../admin/Dashboard.dart';
 import 'users_page.dart';
 import 'order_page.dart';
 import 'admin_products_page.dart';
@@ -12,10 +11,10 @@ class AppDrawer extends StatelessWidget {
 
   const AppDrawer({super.key, required this.currentPage});
 
+  static const Color darkBrown = Color(0xFF332014);
+
   @override
   Widget build(BuildContext context) {
-    const Color darkBrown = Color(0xFF332014);
-
     return Drawer(
       backgroundColor: const Color(0xFFFDF6EC),
       child: Column(
@@ -26,14 +25,14 @@ class AppDrawer extends StatelessWidget {
             color: const Color(0xFFE2BE8D),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                CircleAvatar(
+              children: [
+                const CircleAvatar(
                   radius: 26,
                   backgroundColor: darkBrown,
                   child: Icon(Icons.local_cafe, color: Colors.white, size: 28),
                 ),
-                SizedBox(height: 12),
-                Text(
+                const SizedBox(height: 12),
+                const Text(
                   'TeaMart Admin',
                   style: TextStyle(
                     color: darkBrown,
@@ -41,7 +40,7 @@ class AppDrawer extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
+                const Text(
                   'admin@teamart.com',
                   style: TextStyle(color: Colors.brown, fontSize: 12),
                 ),
@@ -56,42 +55,42 @@ class AppDrawer extends StatelessWidget {
                   context,
                   icon: Icons.dashboard_outlined,
                   title: 'Dashboard',
-                  page: const DashboardScreen(),
+                  page: DashboardScreen(),
                   isSelected: currentPage == 'Dashboard',
                 ),
                 _buildItem(
                   context,
                   icon: Icons.people_outline,
                   title: 'Users Management',
-                  page: const UsersPage(),
+                  page: UsersPage(),
                   isSelected: currentPage == 'Users',
                 ),
                 _buildItem(
                   context,
                   icon: Icons.shopping_bag_outlined,
                   title: 'Orders',
-                  page: const OrderPage(),
+                  page: OrderPage(),
                   isSelected: currentPage == 'Orders',
                 ),
                 _buildItem(
                   context,
                   icon: Icons.inventory_2_outlined,
                   title: 'Products (Stock)',
-                  page: const AdminProductsPage(),
+                  page: AdminProductsPage(),
                   isSelected: currentPage == 'Products',
                 ),
                 _buildItem(
                   context,
                   icon: Icons.add_box_outlined,
                   title: 'Add New Product',
-                  page: const AddProductsPage(),
+                  page: AddProductsPage(),
                   isSelected: currentPage == 'AddProduct',
                 ),
                 _buildItem(
                   context,
                   icon: Icons.edit_note_outlined,
                   title: 'Edit Product',
-                  page: const EditProductsPage(),
+                  page: EditProductsPage(),
                   isSelected: currentPage == 'EditProduct',
                 ),
               ],
@@ -111,7 +110,7 @@ class AppDrawer extends StatelessWidget {
   }) {
     return ListTile(
       selected: isSelected,
-      selectedTileColor: const Color(0xFFE2BE8D).withOpacity(0.3),
+      selectedTileColor: const Color(0x4DE2BE8D),
       leading: Icon(icon, color: const Color(0xFF4A2E18), size: 22),
       title: Text(
         title,
