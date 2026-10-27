@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'dashboard.dart';
-=======
 import '../admin/Dashboard.dart';
->>>>>>> shreyu
 import 'users_page.dart';
 import 'order_page.dart';
 import 'admin_products_page.dart';

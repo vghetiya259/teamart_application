@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'admin_register_page.dart';
-<<<<<<< HEAD
-import 'dashboard.dart'; // Dashboard પેજ ઈમ્પોર્ટ કર્યું
-=======
+import 'dashboard.dart';
 import '../admin/Dashboard.dart';
->>>>>>> shreyu
 
 class AdminLoginPage extends StatefulWidget {
   const AdminLoginPage({super.key});
