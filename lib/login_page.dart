@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'register_page.dart';
 import 'forgot_password_page.dart';
+import '../admin/admin_login_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -127,7 +128,14 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 15),
 
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AdminLoginPage(),
+                      ),
+                    );
+                  },
                   child: const Text(
                     'Admin Login',
                     style: TextStyle(color: Color(0xFF5A3A22)),
