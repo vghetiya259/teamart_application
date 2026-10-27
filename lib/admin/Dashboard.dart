@@ -15,10 +15,9 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: bgColor,
 
-      // અહીં કોમન AppDrawer ઉપયોગ કર્યો છે
+     
       drawer: const AppDrawer(currentPage: 'Dashboard'),
 
-      // --- મેઇન બોડી ---
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -26,11 +25,11 @@ class DashboardScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // ટોપ બાર (મેનુ આઇકન & પ્રોફાઇલ અવતાર)
+             
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Builder દ્વારા ડાબી બાજુથી Drawer ઓપન થશે
+                 
                   Builder(
                     builder: (context) => IconButton(
                       icon: const Icon(Icons.menu, color: darkBrown, size: 28),
@@ -55,7 +54,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              // TeaMart લોગો સેક્શન
+             
               Column(
                 children: [
                   Icon(
@@ -86,7 +85,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 22),
 
-              // ડેશબોર્ડ ઓવરવ્યૂ
+              
               const Text(
                 'Dashboard Overview',
                 style: TextStyle(
@@ -124,7 +123,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 18),
 
-              // Total Orders લેબલ
+             
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -138,7 +137,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
 
-              // મેટ્રિક્સ રોઝ
+            
               _buildMetricRow(
                 avatarBg: const Color(0xFFE2BE8D),
                 icon: Icons.shopping_bag_rounded,
@@ -149,7 +148,7 @@ class DashboardScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // Low Stock Alert Row
+              
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
