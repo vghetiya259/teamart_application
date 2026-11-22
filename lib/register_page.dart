@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -16,8 +17,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _pincodeController = TextEditingController();
 
-  // Password visibility
+  // Password visibility & loading state
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   // Error message variables
   String? _fullNameError;
@@ -27,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String? _addressError;
   String? _pincodeError;
 
-  void _validateAndSubmit() {
+  Future<void> _validateAndSubmit() async {
     setState(() {
       _fullNameError = null;
       _emailError = null;
@@ -35,69 +37,104 @@ class _RegisterPageState extends State<RegisterPage> {
       _phoneError = null;
       _addressError = null;
       _pincodeError = null;
-
-      final fullName = _fullNameController.text.trim();
-      final email = _emailController.text.trim();
-      final password = _passwordController.text.trim();
-      final phone = _phoneController.text.trim();
-      final address = _addressController.text.trim();
-      final pincode = _pincodeController.text.trim();
-
-      bool isValid = true;
-
-      // Full Name Validation
-      if (fullName.isEmpty) {
-        _fullNameError = 'Full name is required';
-        isValid = false;
-      }
-
-      // Email Validation
-      if (email.isEmpty) {
-        _emailError = 'Email address is required';
-        isValid = false;
-      } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
-        _emailError = 'Please enter a valid email';
-        isValid = false;
-      }
-
-      // Password Validation
-      if (password.isEmpty) {
-        _passwordError = 'Password is required';
-        isValid = false;
-      } else if (password.length < 6) {
-        _passwordError = 'Password must be at least 6 characters';
-        isValid = false;
-      }
-
-      // Phone Number Validation
-      if (phone.isEmpty) {
-        _phoneError = 'Phone number is required';
-        isValid = false;
-      } else if (phone.length != 10) {
-        _phoneError = 'Please enter a valid 10-digit phone number';
-        isValid = false;
-      }
-
-      // Address Validation
-      if (address.isEmpty) {
-        _addressError = 'Address is required';
-        isValid = false;
-      }
-
-      // Pincode Validation
-      if (pincode.isEmpty) {
-        _pincodeError = 'Pincode is required';
-        isValid = false;
-      } else if (pincode.length != 6) {
-        _pincodeError = 'Please enter a valid 6-digit pincode';
-        isValid = false;
-      }
-
-      // If valid, submit/go back
-      if (isValid) {
-        Navigator.pop(context);
-      }
     });
+
+    final fullName = _fullNameController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final phone = _phoneController.text.trim();
+    final address = _addressController.text.trim();
+    final pincode = _pincodeController.text.trim();
+
+    bool isValid = true;
+
+    // Full Name Validation
+    if (fullName.isEmpty) {
+      _fullNameError = 'Full name is required';
+      isValid = false;
+    }
+
+    // Email Validation
+    if (email.isEmpty) {
+      _emailError = 'Email address is required';
+      isValid = false;
+    } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      _emailError = 'Please enter a valid email';
+      isValid = false;
+    }
+
+    // Password Validation
+    if (password.isEmpty) {
+      _passwordError = 'Password is required';
+      isValid = false;
+    } else if (password.length < 6) {
+      _passwordError = 'Password must be at least 6 characters';
+      isValid = false;
+    }
+
+    // Phone Number Validation
+    if (phone.isEmpty) {
+      _phoneError = 'Phone number is required';
+      isValid = false;
+    } else if (phone.length != 10) {
+      _phoneError = 'Please enter a valid 10-digit phone number';
+      isValid = false;
+    }
+
+    // Address Validation
+    if (address.isEmpty) {
+      _addressError = 'Address is required';
+      isValid = false;
+    }
+
+    // Pincode Validation
+    if (pincode.isEmpty) {
+      _pincodeError = 'Pincode is required';
+      isValid = false;
+    } else if (pincode.length != 6) {
+      _pincodeError = 'Please enter a valid 6-digit pincode';
+      isValid = false;
+    }
+
+    if (!isValid) {
+      setState(() {});
+      return;
+    }
+
+    // Save data to Firebase Firestore 'Register' collection
+    setState(() => _isLoading = true);
+
+    try {
+      await FirebaseFirestore.instance.collection('Register').add({
+        'full_name': fullName,
+        'email': email,
+        'password': password,
+        'phone_number': phone,
+        'address': address,
+        'pincode': int.tryParse(pincode) ?? pincode,
+      });
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Registration successful! Data saved to Firebase.'),
+          backgroundColor: Color(0xFF6B4226),
+        ),
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving data: $e'),
+          backgroundColor: const Color(0xFFE53935),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   @override
@@ -241,15 +278,24 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: _validateAndSubmit,
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  onPressed: _isLoading ? null : _validateAndSubmit,
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                          'Register',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ),
             ],
