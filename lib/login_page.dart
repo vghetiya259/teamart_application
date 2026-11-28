@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'register_page.dart';
 import 'forgot_password_page.dart';
+import 'home_page.dart'; // HomePage mate import
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool _obscurePassword = true;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -23,12 +26,63 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _handleLogin() {
-    if (_formKey.currentState!.validate()) {
-      // Form valid thay tyare login process karo
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Logging in...')));
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final String email = _emailController.text.trim();
+      final String password = _passwordController.text;
+
+      // Firestore na 'Register' collection ma email ane password check karo
+      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Register')
+          .where('email', isEqualTo: email)
+          .where('password', isEqualTo: password)
+          .limit(1)
+          .get();
+
+      if (!mounted) return;
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Login safal thay tyare HomePage par redirect karo
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login Successful!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      } else {
+        // Email athva Password khoto hoy tyare
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid Email or Password'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -76,7 +130,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 25),
 
                 // Login Button
-                _buildBrownButton('Login in to your Mart', _handleLogin),
+                _buildBrownButton(
+                  'Login in to your Mart',
+                  _isLoading ? null : _handleLogin,
+                ),
 
                 const SizedBox(height: 20),
 
@@ -290,7 +347,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildBrownButton(String text, VoidCallback onPressed) {
+  Widget _buildBrownButton(String text, VoidCallback? onPressed) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
@@ -303,14 +360,23 @@ class _LoginPageState extends State<LoginPage> {
           elevation: 2,
         ),
         onPressed: onPressed,
-        child: Text(
-          text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: _isLoading
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                text,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }
